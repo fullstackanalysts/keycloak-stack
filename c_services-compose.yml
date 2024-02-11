@@ -1,0 +1,24 @@
+version: '3'
+services:
+  whoami:
+    image: containous/whoami
+    networks:
+      - network1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`example.com`) && PathPrefix(`/whoami`)"
+      - "traefik.http.routers.whoami.middlewares=flaskauthyml"
+
+  whoami2:
+    image: containous/whoami
+    networks:
+      - network1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami2.rule=Host(`whoami.example.com`)"
+      - "traefik.http.routers.whoami2.middlewares=flaskauthyml"
+
+networks:
+  network1:
+    name: traefik
+    external: true

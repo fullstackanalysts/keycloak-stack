@@ -1,0 +1,23 @@
+version: '3'
+services:
+  flaskauthyml:
+    image: flaskauth
+    restart: always
+    environment:
+      - FLASK_HOST=example.com
+      - KC_CLIENTID=pyauth
+      - KC_CLIENTREALM=fullstack
+      - KC_DOMAIN=http://keycloak.example.com
+      - KC_CLIENTSECRET=R0rh7XZ1NKfW3F9TIkNn83Pl9GgcZwme
+      - AUTH_DOMAIN=example.com
+    networks:
+      - network1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flaskauthyml.rule=Host(`example.com`)"
+      - "traefik.http.middlewares.flaskauthyml.forwardauth.address=http://example.com/auth"
+
+networks:
+  network1:
+    name: traefik
+    external: true
